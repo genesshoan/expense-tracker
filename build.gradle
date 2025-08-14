@@ -1,0 +1,37 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+group = 'dev.shoangenes'
+version = '1.0-SNAPSHOT'
+
+application {
+    mainClass = 'dev.shoangenes.expensetracker.ExpenseTrackerCLI'
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Gson
+    implementation 'com.google.code.gson:gson:2.10.1'
+    // Picocli
+    implementation 'info.picocli:picocli:4.7.4'
+    annotationProcessor 'info.picocli:picocli-codegen:4.7.4'
+
+    // JUnit
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+test {
+    useJUnitPlatform()
+}
