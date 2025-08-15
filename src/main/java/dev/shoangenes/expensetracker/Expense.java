@@ -9,6 +9,7 @@ public class Expense {
     private String description;
     private double amount;
     private LocalDate creationDate;
+    private ExpenseCategory category;
 
     /**
      * Empty constructor for Gson
@@ -24,11 +25,12 @@ public class Expense {
      * @param description the description of the expense
      * @param amount the amount of the expense
      */
-    public Expense(String description, double amount) {
+    public Expense(String description, double amount, ExpenseCategory category) {
         this.id = ++lastIdSaved;
         this.description = description;
         this.amount = amount;
         creationDate = LocalDate.now();
+        this.category = category;
     }
 
     /**
@@ -68,6 +70,43 @@ public class Expense {
     }
 
     /**
+     * Gets the creation date
+     *
+     * @return the creation date
+     */
+    public LocalDate getCreationDate() {
+        return creationDate;
+    }
+
+    /**
+     * Gets the amount of the expense
+     *
+     * @return the amount of the expense
+     */
+    public double getAmount() {
+        return amount;
+    }
+
+    public ExpenseCategory getCategory() {
+        return category;
+    }
+
+    /**
+     * Truncates the string representation of an object to a specified length.
+     * If the string exceeds the given length, it appends "..." at the end.
+     * <p>
+     * Example for description = "I need food" the result is something like "I need fo..."
+     *
+     * @param o the object whose string representation will be truncated
+     * @param l the maximum length of the resulting string
+     * @return the truncated string with "..." if it exceeds the specified length
+     */
+    private BiFunction<Object, Integer, String> truncate = (o, l) -> {
+        String content = o.toString();
+        return content.length() > l ? content.substring(0, l - 3) + "..." : content;
+    };
+
+    /**
      * Returns a formatted string representation of the expense object.
      * This method provides a human-readable format of the task details, including ID, description, amount, and creation timestamp.
      *
@@ -75,15 +114,10 @@ public class Expense {
      */
     @Override
     public String toString() {
-        // Example for description = "I need food" the result is something like "I need fo..."
-        BiFunction<Object, Integer, String> truncate = (o, l) -> {
-            String content = o.toString();
-            return content.length() > l ? content.substring(0, l - 3) + "..." : content;
-        };
-
-        return String.format("# %-3d %-10s %-12s $%.2f",
+        return String.format("%-3d %-10s %-10s %-12s $%.2f",
                     id,
                     creationDate,
+                    truncate.apply(category, 10),
                     truncate.apply(description, 12),
                     amount
         );
