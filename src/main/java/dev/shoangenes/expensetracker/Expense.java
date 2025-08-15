@@ -26,11 +26,23 @@ public class Expense {
      * @param amount the amount of the expense
      */
     public Expense(String description, double amount, ExpenseCategory category) {
+        validateInputs(description, amount);
+
         this.id = ++lastIdSaved;
-        this.description = description;
+        this.description = description.trim();
         this.amount = amount;
         creationDate = LocalDate.now();
         this.category = category;
+    }
+
+    private void validateInputs(String description, double amount) {
+        if (description.trim().isEmpty()) {
+            throw new IllegalArgumentException("Description cannot be empty");
+        }
+
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Amount must be positive");
+        }
     }
 
     /**
@@ -103,7 +115,7 @@ public class Expense {
      */
     private BiFunction<Object, Integer, String> truncate = (o, l) -> {
         String content = o.toString();
-        return content.length() > l ? content.substring(0, l - 3) + "..." : content;
+        return content.length() > l ? content.substring(0, l - 3).trim() + "..." : content;
     };
 
     /**

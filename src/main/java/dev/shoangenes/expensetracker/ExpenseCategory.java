@@ -40,7 +40,7 @@ public enum ExpenseCategory {
      * @return the matching ExpenseCategory
      * @throws IllegalArgumentException if no matching category is found
      */
-    public ExpenseCategory parseCategory(String categoryStr) {
+    public static ExpenseCategory parseCategory(String categoryStr) {
         String normalized = categoryStr.toLowerCase().trim();
 
         try {
