@@ -24,6 +24,7 @@ public class Expense {
      *
      * @param description the description of the expense
      * @param amount the amount of the expense
+     * @throws IllegalArgumentException if the business rules are violated (negative amount, empty description)
      */
     public Expense(String description, double amount, ExpenseCategory category) {
         validateInputs(description, amount);
