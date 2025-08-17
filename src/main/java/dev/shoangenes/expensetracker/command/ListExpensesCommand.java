@@ -8,13 +8,11 @@ import java.util.List;
 /**
  * Command to list expenses based on a given query.
  */
-public class ListExpensesCommand implements Command {
+public class ListExpensesCommand implements Command<List<Expense>> {
     /** Expense tracker instance to operate on. */
     private ExpenseTracker expenseTracker;
     /** Query to filter expenses. */
     private ExpenseQuery expenseQuery;
-    /** Resulting list of expenses after execution. */
-    private List<Expense> result;
 
     /**
      * Constructs a ListExpensesCommand with the specified expense tracker and query.
@@ -28,19 +26,10 @@ public class ListExpensesCommand implements Command {
     }
 
     /**
-     * Gets the list of expenses resulting from the command execution.
-     *
-     * @return the list of expenses
-     */
-    public List<Expense> getResult() {
-        return result;
-    }
-
-    /**
      * Executes the command to list expenses based on the provided query.
      */
     @Override
-    public void execute() {
-        this.result = expenseTracker.listExpenses(expenseQuery);
+    public List<Expense> execute() {
+        return expenseTracker.listExpenses(expenseQuery);
     }
 }

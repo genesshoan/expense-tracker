@@ -8,10 +8,8 @@ import dev.shoangenes.expensetrackercli.commands.*;
         description = "A simple expense tracker CLI application.",
         subcommands = {
             AddCommand.class,
-            DeleteCommand.class/*
-            dev.shoangenes.expensetrackercli.commands.ListCommand.class,
-            dev.shoangenes.expensetrackercli.commands.ExportCommand.class,
-            dev.shoangenes.expensetrackercli.commands.ImportCommand.class*/
+            DeleteCommand.class,
+            ListCommand.class
         })
 public class ExpenseTrackerCli implements Runnable {
     private final ExpenseTracker expenseTracker = new ExpenseTracker();

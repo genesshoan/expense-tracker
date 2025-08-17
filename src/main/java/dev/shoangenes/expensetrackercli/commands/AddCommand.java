@@ -35,7 +35,7 @@ public class AddCommand implements Runnable {
     @Override
     public void run() {
         try {
-            Command command = new AddExpenseCommand(
+            Command<Void> command = new AddExpenseCommand(
                     parent.getExpenseTracker(),
                     description,
                     amount,

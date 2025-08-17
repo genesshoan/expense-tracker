@@ -5,7 +5,7 @@ import dev.shoangenes.expensetracker.service.ExpenseTracker;
 /**
  * Command to delete an expense by its ID.
  */
-public class DeleteExpeseCommand implements Command {
+public class DeleteExpeseCommand implements Command<Void> {
     /** Expense tracker instance to operate on. */
     private ExpenseTracker expenseTracker;
     /** ID of the expense to delete. */
@@ -26,7 +26,8 @@ public class DeleteExpeseCommand implements Command {
      * Executes the command to delete the expense.
      */
     @Override
-    public void execute() {
+    public Void execute() {
         expenseTracker.deleteExpense(id);
+        return null;
     }
 }

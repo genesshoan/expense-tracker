@@ -134,8 +134,6 @@ public class ExpenseTracker {
      * @return a list of filtered and sorted expenses
      */
     public List<Expense> listExpenses(ExpenseQuery query) {
-        /*System.out.printf("%-3s %-10s %-12s %s", "ID", "Date", "Description", "Amount");
-        System.out.println("--------------------------------");*/
         return expenses.values().stream()
                 .filter(query.getFilter())
                 .sorted(query.getSorter())

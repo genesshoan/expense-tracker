@@ -3,9 +3,9 @@ package dev.shoangenes.expensetracker.command;
 /**
  * Represents a command that can be executed.
  */
-public interface Command {
+public interface Command<R> {
     /**
      * Executes the command.
      */
-    void execute();
+    R execute();
 }

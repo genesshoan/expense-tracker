@@ -2,10 +2,8 @@ package dev.shoangenes.expensetrackercli.commands;
 
 import dev.shoangenes.expensetracker.command.Command;
 import dev.shoangenes.expensetracker.command.DeleteExpeseCommand;
-import dev.shoangenes.expensetracker.service.ExpenseTracker;
 import dev.shoangenes.expensetrackercli.ExpenseTrackerCli;
 import picocli.CommandLine;
-import dev.shoangenes.expensetrackercli.commands.DeleteCommand;
 
 @CommandLine.Command(name = "delete", description = "Delete an expense by ID.")
 public class DeleteCommand implements Runnable {
@@ -13,12 +11,15 @@ public class DeleteCommand implements Runnable {
     private ExpenseTrackerCli parent;
 
     @CommandLine.Option(names = {"-i", "--id"}, description = "Expense's id",  required = true)
-    private int id;
+    private Integer id;
 
+    /**
+     * Executes the command to delete an expense by its id
+     */
     @Override
     public void run() {
         try {
-            Command command = new DeleteExpeseCommand(parent.getExpenseTracker(), id);
+            Command<Void> command = new DeleteExpeseCommand(parent.getExpenseTracker(), id);
             command.execute();
             System.out.println("Successfully deleted expense by ID: " + id);
         } catch (Exception e) {

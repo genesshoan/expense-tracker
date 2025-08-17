@@ -6,7 +6,7 @@ import dev.shoangenes.expensetracker.service.ExpenseTracker;
 /**
  * Command to add a new expense to the ExpenseTracker.
  */
-public class AddExpenseCommand implements Command {
+public class AddExpenseCommand implements Command<Void> {
     /**
      * The ExpenseTracker instance where the expense will be added.
      */
@@ -46,7 +46,8 @@ public class AddExpenseCommand implements Command {
      * Executes the command to add an expense to the ExpenseTracker.
      */
     @Override
-    public void execute() {
+    public Void execute() {
         expenseTracker.addExpense(description, amount, category);
+        return null;
     }
 }

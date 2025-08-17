@@ -5,7 +5,7 @@ import dev.shoangenes.expensetracker.service.ExpenseTracker;
 /**
  * Command to update an existing expense's description in the ExpenseTracker.
  */
-public class UpdateExpenseCommand implements Command {
+public class UpdateExpenseCommand implements Command<Void> {
     /** ExpenseTracker instance to operate on */
     private ExpenseTracker expenseTracker;
     /** ID of the expense to update */
@@ -30,7 +30,8 @@ public class UpdateExpenseCommand implements Command {
      * Executes the command to update the expense's description.
      */
     @Override
-    public void execute() {
+    public Void execute() {
         expenseTracker.updateExpense(id, description);
+        return null;
     }
 }

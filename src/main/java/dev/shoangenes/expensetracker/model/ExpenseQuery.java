@@ -3,6 +3,7 @@ package dev.shoangenes.expensetracker.model;
 import java.time.Year;
 import java.time.YearMonth;
 import java.util.Comparator;
+import java.util.List;
 import java.util.function.Predicate;
 
 /**
@@ -92,5 +93,36 @@ public class ExpenseQuery {
         sorter = ascending ? Comparator.comparing(Expense::getAmount)
                             : Comparator.comparing(Expense::getAmount).reversed();
         return this;
+    }
+
+    public static ExpenseQuery makeQuery(
+            List<ExpenseCategory> categoryList,
+            Double minAmount,
+            YearMonth yearMonth,
+            Year year,
+            Boolean ascending
+    ) {
+        ExpenseQuery query = new ExpenseQuery();
+        if (categoryList != null) {
+            categoryList.forEach(query::byCategory);
+        }
+
+        if (minAmount != null) {
+            query.byMinAmount(minAmount);
+        }
+
+        if (yearMonth != null) {
+            query.byMonth(yearMonth);
+        }
+
+        if (year != null) {
+            query.byYear(year);
+        }
+
+        if (ascending != null) {
+            query.sortByAmount(ascending);
+        }
+
+        return query;
     }
 }
