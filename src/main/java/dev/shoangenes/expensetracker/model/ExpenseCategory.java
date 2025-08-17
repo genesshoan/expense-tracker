@@ -1,4 +1,4 @@
-package dev.shoangenes.expensetracker;
+package dev.shoangenes.expensetracker.model;
 
 /**
  * Enum representing different categories of expenses.

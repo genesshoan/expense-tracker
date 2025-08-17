@@ -1,4 +1,4 @@
-package dev.shoangenes.expensetracker;
+package dev.shoangenes.expensetracker.model;
 
 import com.google.gson.*;
 import java.lang.reflect.Type;

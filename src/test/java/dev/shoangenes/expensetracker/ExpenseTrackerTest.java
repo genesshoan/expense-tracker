@@ -1,5 +1,9 @@
 package dev.shoangenes.expensetracker;
 
+import dev.shoangenes.expensetracker.model.Expense;
+import dev.shoangenes.expensetracker.model.ExpenseCategory;
+import dev.shoangenes.expensetracker.model.ExpenseQuery;
+import dev.shoangenes.expensetracker.service.ExpenseTracker;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

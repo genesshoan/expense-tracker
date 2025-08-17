@@ -1,4 +1,4 @@
-package dev.shoangenes.expensetracker;
+package dev.shoangenes.expensetracker.service;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -10,6 +10,11 @@ import java.util.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import dev.shoangenes.expensetracker.model.ExpenseQuery;
+import dev.shoangenes.expensetracker.exception.ExpenseStorageException;
+import dev.shoangenes.expensetracker.model.LocalDateAdapter;
+import dev.shoangenes.expensetracker.model.Expense;
+import dev.shoangenes.expensetracker.model.ExpenseCategory;
 
 public class ExpenseTracker {
     private final Path FILE_PATH = Path.of("expense_tracker.json");

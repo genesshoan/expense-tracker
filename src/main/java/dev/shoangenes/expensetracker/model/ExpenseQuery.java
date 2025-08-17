@@ -1,8 +1,7 @@
-package dev.shoangenes.expensetracker;
+package dev.shoangenes.expensetracker.model;
 
 import java.time.Year;
 import java.time.YearMonth;
-import java.time.format.DateTimeParseException;
 import java.util.Comparator;
 import java.util.function.Predicate;
 

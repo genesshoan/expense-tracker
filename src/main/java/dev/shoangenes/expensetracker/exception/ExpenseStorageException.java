@@ -1,4 +1,4 @@
-package dev.shoangenes.expensetracker;
+package dev.shoangenes.expensetracker.exception;
 /**
  * Custom exception for errors related to expense storage.
  */

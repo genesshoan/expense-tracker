@@ -1,5 +1,6 @@
 package dev.shoangenes.expensetracker;
 
+import dev.shoangenes.expensetracker.model.ExpenseCategory;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import static org.assertj.core.api.Assertions.*;
