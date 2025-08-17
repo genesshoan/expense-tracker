@@ -2,16 +2,11 @@ package dev.shoangenes.expensetracker;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
-
 import java.time.LocalDate;
 import java.time.YearMonth;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
-
-import static org.junit.jupiter.api.Assertions.*;
 import static org.assertj.core.api.Assertions.*;
 
 public class ExpenseQueryTest {
@@ -21,7 +16,6 @@ public class ExpenseQueryTest {
     void setUp() {
         Expense.setLastIdSaved(0);
 
-        // Crear gastos de prueba con diferentes características
         testExpenses = List.of(
                 createExpense("Lunch", 15.0, ExpenseCategory.FOOD),
                 createExpense("Bus ticket", 3.50, ExpenseCategory.TRANSPORT),
@@ -37,7 +31,7 @@ public class ExpenseQueryTest {
 
     @Test
     void testByCategoryFilter() {
-        ExpenseQuery expenseQuery = new ExpenseQuery().byCategory("FOOD");
+        ExpenseQuery expenseQuery = new ExpenseQuery().byCategory(ExpenseCategory.FOOD);
         Predicate<Expense> filter = expenseQuery.getFilter();
 
         List<Expense> expenses = testExpenses.stream()
@@ -66,7 +60,7 @@ public class ExpenseQueryTest {
     @Test
     void testChainedFilters() {
         ExpenseQuery expenseQuery = new ExpenseQuery()
-                                        .byCategory("FOOD")
+                                        .byCategory(ExpenseCategory.FOOD)
                                         .byMinAmount(10.0);
         Predicate<Expense> filter = expenseQuery.getFilter();
 
@@ -83,7 +77,7 @@ public class ExpenseQueryTest {
 
     @Test
     void testByMonthFilter() {
-        ExpenseQuery expenseQuery = new ExpenseQuery().byMonth(String.valueOf(YearMonth.from(LocalDate.now())));
+        ExpenseQuery expenseQuery = new ExpenseQuery().byMonth(YearMonth.from(LocalDate.now()));
         Predicate<Expense> filter = expenseQuery.getFilter();
         List<Expense> expenses = testExpenses.stream()
                 .filter(filter)
@@ -100,10 +94,9 @@ public class ExpenseQueryTest {
                 .sorted(query.getSorter())
                 .toList();
 
-        assertThat(result).isSortedAccordingTo((e1, e2) ->
-                Double.compare(e1.getAmount(), e2.getAmount()));
-        assertThat(result.get(0).getAmount()).isEqualTo(3.50);
-        assertThat(result.get(result.size()-1).getAmount()).isEqualTo(45.30);
+        assertThat(result).isSortedAccordingTo(Comparator.comparingDouble(Expense::getAmount));
+        assertThat(result.getFirst().getAmount()).isEqualTo(3.50);
+        assertThat(result.getLast().getAmount()).isEqualTo(45.30);
     }
 
     @Test
@@ -116,14 +109,14 @@ public class ExpenseQueryTest {
 
         assertThat(result).isSortedAccordingTo((e1, e2) ->
                 Double.compare(e2.getAmount(), e1.getAmount()));
-        assertThat(result.get(0).getAmount()).isEqualTo(45.30);
-        assertThat(result.get(result.size()-1).getAmount()).isEqualTo(3.50);
+        assertThat(result.getFirst().getAmount()).isEqualTo(45.30);
+        assertThat(result.getLast().getAmount()).isEqualTo(3.50);
     }
 
     @Test
     void testComplexQuery() {
         ExpenseQuery query = new ExpenseQuery()
-                .byCategory("FOOD")
+                .byCategory(ExpenseCategory.FOOD)
                 .byMinAmount(5.0)
                 .sortByAmount(false);
 
@@ -135,20 +128,6 @@ public class ExpenseQueryTest {
         assertThat(result).hasSize(2);
         assertThat(result.get(0).getAmount()).isEqualTo(45.30);
         assertThat(result.get(1).getAmount()).isEqualTo(15.0);
-    }
-
-    @Test
-    void testInvalidCategory() {
-        assertThatThrownBy(() -> new ExpenseQuery().byCategory("INVALID"))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("Invalid ExpenseCategory");
-    }
-
-    @Test
-    void testInvalidMonth() {
-        assertThatThrownBy(() -> new ExpenseQuery().byMonth("invalid-month"))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("Invalid year month");
     }
 
     @Test

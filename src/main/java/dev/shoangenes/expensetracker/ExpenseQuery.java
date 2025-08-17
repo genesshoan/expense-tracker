@@ -42,17 +42,11 @@ public class ExpenseQuery {
     /**
      * Filters expenses by the specified category.
      *
-     * @param categoryStr the category as a string
+     * @param category the category as a string
      * @return this query instance for chaining
-     * @throws IllegalArgumentException if the category is invalid
      */
-    public ExpenseQuery byCategory(String categoryStr) {
-        try {
-            ExpenseCategory category = ExpenseCategory.valueOf(categoryStr.toUpperCase());
-            filter = filter.and(e -> e.getCategory() == category);
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Invalid ExpenseCategory: " + categoryStr, e);
-        }
+    public ExpenseQuery byCategory(ExpenseCategory category) {
+        filter = filter.and(e -> e.getCategory() == category);
         return this;
     }
 
@@ -70,34 +64,22 @@ public class ExpenseQuery {
     /**
      * Filters expenses by a specific month.
      *
-     * @param monthStr the month in format yyyy-MM
+     * @param yearMonth the month in format yyyy-MM
      * @return this query instance for chaining
-     * @throws IllegalArgumentException if the month format is invalid
      */
-    public ExpenseQuery byMonth(String monthStr) {
-        try {
-            YearMonth yearMonth = YearMonth.parse(monthStr);
-            filter = filter.and(e -> YearMonth.from(e.getCreationDate()).equals(yearMonth));
-        } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException("Invalid year month, the argument must be such as 2007-12", e);
-        }
+    public ExpenseQuery byMonth(YearMonth yearMonth) {
+        filter = filter.and(e -> YearMonth.from(e.getCreationDate()).equals(yearMonth));
         return this;
     }
 
     /**
      * Filters expenses by a specific year.
      *
-     * @param yearStr the year in format yyyy
+     * @param year the year in format yyyy
      * @return this query instance for chaining
-     * @throws IllegalArgumentException if the year format is invalid
      */
-    public ExpenseQuery byYear(String yearStr) {
-        try {
-            Year year = Year.parse(yearStr);
-            filter = filter.and(e -> Year.from(e.getCreationDate()).equals(year));
-        } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException("Invalid year, the argument must be such as 2007", e);
-        }
+    public ExpenseQuery byYear(Year year) {
+        filter = filter.and(e -> Year.from(e.getCreationDate()).equals(year));
         return this;
     }
 

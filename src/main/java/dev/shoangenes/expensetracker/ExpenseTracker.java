@@ -4,13 +4,19 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDate;
 import java.util.*;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 public class ExpenseTracker {
     private final Path FILE_PATH = Path.of("expense_tracker.json");
+    private static final Gson gson = new GsonBuilder()
+            .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+            .setPrettyPrinting()
+            .create();
     private Map<Integer, Expense> expenses = new HashMap<>();
 
     /**
@@ -44,7 +50,6 @@ public class ExpenseTracker {
         try {
             // Read Json content
             String jsonContent = Files.readString(FILE_PATH);
-            Gson gson = new Gson();
             Type type = new TypeToken<Map<Integer, Expense>>(){}.getType();
 
             // Parse jsonContent to Map
@@ -68,9 +73,8 @@ public class ExpenseTracker {
      *
      * @throws ExpenseStorageException if writing to the file fails
      */
-    public void serializeExpenses() {
+    private void serializeExpenses() {
         try {
-            Gson gson = new Gson();
             Files.writeString(FILE_PATH, gson.toJson(expenses));
         } catch (IOException e) {
             throw new ExpenseStorageException("Error writing expenses to file: " + FILE_PATH, e);
@@ -81,61 +85,41 @@ public class ExpenseTracker {
      * Adds a new expense to the system
      *
      * @param description the expense's description
-     * @param amountStr the expense's amount
-     * @param categoryStr the expense's category
-     * @throws IllegalArgumentException if amount format is invalid, category is invalid,
-     *                                  or business rules are violated (negative amount, empty description)
+     * @param amount the expense's amount
+     * @param category the expense's category
+     * @throws IllegalArgumentException if the business rules are violated (negative amount, empty description)
+     * @throws ExpenseStorageException if writing to the file fails
      */
-    public void addExpense(String description, String amountStr, String categoryStr) {
-        try {
-            double amount = Double.parseDouble(amountStr);
-            ExpenseCategory category = ExpenseCategory.parseCategory(categoryStr);
-            Expense expense = new Expense(description, amount, category);
-            expenses.put(expense.getId(), expense);
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Invalid amount format: " + amountStr, e);
-        }
-    }
-
-    /**
-     * Parses the provided identifier string to an integer.
-     *
-     * @param id the identifier as a string
-     * @return the identifier as an integer
-     * @throws IllegalArgumentException if the id format is invalid
-     */
-    private int parseId(String id) {
-        try {
-            return Integer.parseInt(id);
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Invalid id format: " + id, e);
-        }
+    public void addExpense(String description, Double amount, ExpenseCategory category) {
+        Expense expense = new Expense(description, amount, category);
+        expenses.put(expense.getId(), expense);
+        serializeExpenses();
     }
 
     /**
      * Updates the description of the given expense
      *
-     * @param idStr the ID of the expense to update
+     * @param id the ID of the expense to update
      * @param description the new expense's description
      * @throws NoSuchElementException if the expense doesn't exist
-     * @throws IllegalArgumentException if the ID has an invalid format
+     * @throws ExpenseStorageException if writing to the file fails
      */
-    public void updateExpense(String idStr, String description) {
-        int id = parseId(idStr);
+    public void updateExpense(int id, String description) {
         Expense expense = Optional.ofNullable(expenses.get(id)).orElseThrow(() -> new NoSuchElementException("No such expense with id: " + id));
         expense.updateDescription(description);
+        serializeExpenses();
     }
 
     /**
      * Deletes the given expense
      *
-     * @param idStr the ID of the expense to delete
+     * @param id the ID of the expense to delete
      * @throws NoSuchElementException if the expense doesn't exist
-     * @throws IllegalArgumentException if the ID has an invalid format
+     * @throws ExpenseStorageException if writing to the file fails
      */
-    public void deleteExpense(String idStr) {
-        int id = parseId(idStr);
+    public void deleteExpense(int id) {
         Optional.ofNullable(expenses.remove(id)).orElseThrow(() -> new NoSuchElementException("No such expense with id: " + id));
+        serializeExpenses();
     }
 
     /**

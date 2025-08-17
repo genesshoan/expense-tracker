@@ -19,7 +19,7 @@ public class ExpenseCategoryTest {
             "'', MISC, false",
             "FOODIE, MISC, false"
     })
-    void testParseCategory(String value, ExpenseCategory expected,boolean shouldWork) {
+    void testParseCategory(String value, ExpenseCategory expected, boolean shouldWork) {
         if (shouldWork) {
             assertThat(ExpenseCategory.parseCategory(value)).isEqualTo(expected);
         } else {
