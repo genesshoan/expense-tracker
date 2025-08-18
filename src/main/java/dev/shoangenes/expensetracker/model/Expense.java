@@ -110,13 +110,13 @@ public class Expense {
      * <p>
      * Example for description = "I need food" the result is something like "I need fo..."
      *
-     * @param o the object whose string representation will be truncated
-     * @param l the maximum length of the resulting string
+     * @param obj the object whose string representation will be truncated
+     * @param length the maximum length of the resulting string
      * @return the truncated string with "..." if it exceeds the specified length
      */
-    private BiFunction<Object, Integer, String> truncate = (o, l) -> {
-        String content = o.toString();
-        return content.length() > l ? content.substring(0, l - 3).trim() + "..." : content;
+    private String truncate(Object obj, int length) {
+        String content = obj.toString();
+        return content.length() > length ? content.substring(0, length - 3).trim() + "..." : content;
     };
 
     /**
@@ -130,8 +130,8 @@ public class Expense {
         return String.format("%-3d %-10s %-10s %-12s $%.2f",
                     id,
                     creationDate,
-                    truncate.apply(category, 10),
-                    truncate.apply(description, 12),
+                    truncate(category, 10),
+                    truncate(description, 12),
                     amount
         );
     }

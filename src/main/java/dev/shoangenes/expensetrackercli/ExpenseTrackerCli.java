@@ -1,6 +1,7 @@
 package dev.shoangenes.expensetrackercli;
 
 import dev.shoangenes.expensetracker.service.ExpenseTracker;
+import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import dev.shoangenes.expensetrackercli.commands.*;
 
@@ -9,7 +10,9 @@ import dev.shoangenes.expensetrackercli.commands.*;
         subcommands = {
             AddCommand.class,
             DeleteCommand.class,
-            ListCommand.class
+            ListCommand.class,
+            SummaryCommand.class,
+            UpdateCommand.class
         })
 public class ExpenseTrackerCli implements Runnable {
     private final ExpenseTracker expenseTracker = new ExpenseTracker();
@@ -29,5 +32,10 @@ public class ExpenseTrackerCli implements Runnable {
     @Override
     public void run() {
         System.out.println("Use a subcommand: add, delete, list...");
+    }
+
+    public static void main(String[] args) {
+        int exitCode = new CommandLine(new ExpenseTrackerCli()).execute(args);
+        System.exit(exitCode);
     }
 }

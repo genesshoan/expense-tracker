@@ -1,7 +1,7 @@
 package dev.shoangenes.expensetrackercli.commands;
 
 import dev.shoangenes.expensetracker.command.Command;
-import dev.shoangenes.expensetracker.command.DeleteExpeseCommand;
+import dev.shoangenes.expensetracker.command.DeleteExpenseCommand;
 import dev.shoangenes.expensetrackercli.ExpenseTrackerCli;
 import picocli.CommandLine;
 
@@ -19,7 +19,7 @@ public class DeleteCommand implements Runnable {
     @Override
     public void run() {
         try {
-            Command<Void> command = new DeleteExpeseCommand(parent.getExpenseTracker(), id);
+            Command<Void> command = new DeleteExpenseCommand(parent.getExpenseTracker(), id);
             command.execute();
             System.out.println("Successfully deleted expense by ID: " + id);
         } catch (Exception e) {

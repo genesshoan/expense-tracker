@@ -12,6 +12,7 @@ import java.time.Year;
 import java.time.YearMonth;
 import java.util.List;
 
+@CommandLine.Command(name = "list", description = "List expenses with optional filters")
 public class ListCommand implements Runnable {
     @CommandLine.ParentCommand
     private ExpenseTrackerCli parent;
@@ -31,6 +32,11 @@ public class ListCommand implements Runnable {
     @CommandLine.Option(names = {"-sa", "-sortByAmount"}, description = "Sort by amount, ascending or descending")
     Boolean ascending;
 
+    /**
+     * Executes the command to list expenses based on the provided filters.
+     * If no expenses are found, it prints a message indicating that.
+     * Otherwise, it prints the expenses in a formatted table.
+     */
     @Override
     public void run() {
         ExpenseQuery query = ExpenseQuery.makeQuery(categoryList, minAmount, yearMonth, year, ascending);

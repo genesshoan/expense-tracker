@@ -11,6 +11,7 @@ import java.time.Year;
 import java.time.YearMonth;
 import java.util.List;
 
+@CommandLine.Command(name = "summary", description = "Summary expenses with optional filters")
 public class SummaryCommand implements Runnable {
     @CommandLine.ParentCommand
     private ExpenseTrackerCli parent;
@@ -28,6 +29,10 @@ public class SummaryCommand implements Runnable {
     Year year;
 
 
+    /**
+     * Executes the summary command to calculate the total expenses based on the provided filters.
+     * It constructs an ExpenseQuery and uses a SummaryExpensesCommand to get the result.
+     */
     @Override
     public void run() {
         ExpenseQuery query = ExpenseQuery.makeQuery(categoryList, minAmount, yearMonth, year, null);

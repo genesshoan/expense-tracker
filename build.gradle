@@ -3,11 +3,11 @@ plugins {
     id 'application'
 }
 
-group = 'dev.shoangenes'
+group = 'dev.shoangenes.expensetracker'
 version = '1.0-SNAPSHOT'
 
 application {
-    mainClass = 'dev.shoangenes.expensetracker.ExpenseTrackerCLI'
+    mainClass = 'dev.shoangenes.expensetrackercli.ExpenseTrackerCli'
 }
 
 java {
