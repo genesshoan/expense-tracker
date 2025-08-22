@@ -12,6 +12,12 @@ import java.util.function.Predicate;
  */
 public class ExpenseQuery {
     /**
+     * Predicate used to filter expenses by category.
+     * Initialized to null, meaning no category filter is applied by default.
+     */
+    private Predicate<Expense> categoryFilter = null;
+
+    /**
      * Predicate used to filter expenses.
      */
     private Predicate<Expense> filter = e -> true;
@@ -27,7 +33,10 @@ public class ExpenseQuery {
      * @return the filter predicate
      */
     public Predicate<Expense> getFilter() {
-        return filter;
+        if (categoryFilter == null) {
+            return filter;
+        }
+        return categoryFilter.and(filter);
     }
 
     /**
@@ -46,7 +55,11 @@ public class ExpenseQuery {
      * @return this query instance for chaining
      */
     private ExpenseQuery byCategory(ExpenseCategory category) {
-        filter = filter.and(e -> e.getCategory() == category);
+        if (categoryFilter == null) {
+            categoryFilter = e -> e.getCategory() == category;
+        } else {
+            categoryFilter = categoryFilter.or(e -> e.getCategory() == category);
+        }
         return this;
     }
 

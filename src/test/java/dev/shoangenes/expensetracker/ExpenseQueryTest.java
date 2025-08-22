@@ -47,6 +47,20 @@ public class ExpenseQueryTest {
     }
 
     @Test
+    void testByMultipleCategoriesFilter() {
+        ExpenseQuery expenseQuery = ExpenseQuery.makeQuery(List.of(ExpenseCategory.FOOD, ExpenseCategory.ENTERTAINMENT), null, null, null, null);
+        Predicate<Expense> filter = expenseQuery.getFilter();
+
+        List<Expense> expenses = testExpenses.stream()
+                .filter(filter)
+                .toList();
+        assertThat(expenses).hasSize(4);
+        assertThat(expenses).allSatisfy(
+                expense -> assertThat(expense.getCategory()).isIn(ExpenseCategory.FOOD, ExpenseCategory.ENTERTAINMENT)
+        );
+    }
+
+    @Test
     void testByAmountFilter() {
         ExpenseQuery expenseQuery = ExpenseQuery.makeQuery(null, 10.0, null, null, null);
         Predicate<Expense> filter = expenseQuery.getFilter();
