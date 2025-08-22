@@ -34,7 +34,7 @@ public class ExpenseQueryTest {
 
     @Test
     void testByCategoryFilter() {
-        ExpenseQuery expenseQuery = new ExpenseQuery().byCategory(ExpenseCategory.FOOD);
+        ExpenseQuery expenseQuery = ExpenseQuery.makeQuery(List.of(ExpenseCategory.FOOD), null, null, null, null);
         Predicate<Expense> filter = expenseQuery.getFilter();
 
         List<Expense> expenses = testExpenses.stream()
@@ -48,7 +48,7 @@ public class ExpenseQueryTest {
 
     @Test
     void testByAmountFilter() {
-        ExpenseQuery expenseQuery = new ExpenseQuery().byMinAmount(10.0);
+        ExpenseQuery expenseQuery = ExpenseQuery.makeQuery(null, 10.0, null, null, null);
         Predicate<Expense> filter = expenseQuery.getFilter();
 
         List<Expense> expenses = testExpenses.stream()
@@ -62,9 +62,7 @@ public class ExpenseQueryTest {
 
     @Test
     void testChainedFilters() {
-        ExpenseQuery expenseQuery = new ExpenseQuery()
-                                        .byCategory(ExpenseCategory.FOOD)
-                                        .byMinAmount(10.0);
+        ExpenseQuery expenseQuery = ExpenseQuery.makeQuery(List.of(ExpenseCategory.FOOD), 10.0, null, null, null);
         Predicate<Expense> filter = expenseQuery.getFilter();
 
         List<Expense> expenses = testExpenses.stream()
@@ -80,7 +78,7 @@ public class ExpenseQueryTest {
 
     @Test
     void testByMonthFilter() {
-        ExpenseQuery expenseQuery = new ExpenseQuery().byMonth(YearMonth.from(LocalDate.now()));
+        ExpenseQuery expenseQuery = ExpenseQuery.makeQuery(null, null, YearMonth.from(LocalDate.now()), null, null);
         Predicate<Expense> filter = expenseQuery.getFilter();
         List<Expense> expenses = testExpenses.stream()
                 .filter(filter)
@@ -91,7 +89,7 @@ public class ExpenseQueryTest {
 
     @Test
     void testSortByAmountAscending() {
-        ExpenseQuery query = new ExpenseQuery().sortByAmount(true);
+        ExpenseQuery query = ExpenseQuery.makeQuery(null, null, null, null, true);
 
         List<Expense> result = testExpenses.stream()
                 .sorted(query.getSorter())
@@ -104,7 +102,7 @@ public class ExpenseQueryTest {
 
     @Test
     void testSortByAmountDescending() {
-        ExpenseQuery query = new ExpenseQuery().sortByAmount(false);
+        ExpenseQuery query = ExpenseQuery.makeQuery(null, null, null, null, false);
 
         List<Expense> result = testExpenses.stream()
                 .sorted(query.getSorter())
@@ -118,10 +116,7 @@ public class ExpenseQueryTest {
 
     @Test
     void testComplexQuery() {
-        ExpenseQuery query = new ExpenseQuery()
-                .byCategory(ExpenseCategory.FOOD)
-                .byMinAmount(5.0)
-                .sortByAmount(false);
+        ExpenseQuery query = ExpenseQuery.makeQuery(List.of(ExpenseCategory.FOOD), 5.0, null, null, false);
 
         List<Expense> result = testExpenses.stream()
                 .filter(query.getFilter())

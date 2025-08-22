@@ -121,8 +121,7 @@ public class ExpenseTrackerTest {
 
     @Test
     void testListExpensesByCategory() {
-        ExpenseQuery query = new ExpenseQuery();
-        query.byCategory(ExpenseCategory.FOOD);
+        ExpenseQuery query = ExpenseQuery.makeQuery(List.of(ExpenseCategory.FOOD), null, null, null, null);
 
         List<Expense> foodExpenses = testExpenses.listExpenses(query);
 
@@ -140,8 +139,8 @@ public class ExpenseTrackerTest {
 
     @Test
     void testSummaryByCategory() {
-        double foodTotal = testExpenses.summaryExpenses(new ExpenseQuery().byCategory(ExpenseCategory.FOOD));
-        double transportTotal = testExpenses.summaryExpenses(new ExpenseQuery().byCategory(ExpenseCategory.TRANSPORT));
+        double foodTotal = testExpenses.summaryExpenses(ExpenseQuery.makeQuery(List.of(ExpenseCategory.FOOD), null, null, null, null));
+        double transportTotal = testExpenses.summaryExpenses(ExpenseQuery.makeQuery(List.of(ExpenseCategory.TRANSPORT), null, null, null, null));
 
         assertThat(foodTotal).isEqualTo(14.5); // 12.0 + 2.50
         assertThat(transportTotal).isEqualTo(5.75);
@@ -149,7 +148,7 @@ public class ExpenseTrackerTest {
 
     @Test
     void testSummaryEmptyCategory() {
-        double total = testExpenses.summaryExpenses(new ExpenseQuery().byCategory(ExpenseCategory.MISC));
+        double total = testExpenses.summaryExpenses(ExpenseQuery.makeQuery(List.of(ExpenseCategory.MISC), null, null, null, null));
 
         assertThat(total).isEqualTo(0.0);
     }

@@ -45,7 +45,7 @@ public class ExpenseQuery {
      * @param category the category as a string
      * @return this query instance for chaining
      */
-    public ExpenseQuery byCategory(ExpenseCategory category) {
+    private ExpenseQuery byCategory(ExpenseCategory category) {
         filter = filter.and(e -> e.getCategory() == category);
         return this;
     }
@@ -56,7 +56,7 @@ public class ExpenseQuery {
      * @param amount the minimum amount
      * @return this query instance for chaining
      */
-    public ExpenseQuery byMinAmount(double amount) {
+    private ExpenseQuery byMinAmount(double amount) {
         filter = filter.and(e -> e.getAmount() >= amount);
         return this;
     }
@@ -67,7 +67,7 @@ public class ExpenseQuery {
      * @param yearMonth the month in format yyyy-MM
      * @return this query instance for chaining
      */
-    public ExpenseQuery byMonth(YearMonth yearMonth) {
+    private ExpenseQuery byMonth(YearMonth yearMonth) {
         filter = filter.and(e -> YearMonth.from(e.getCreationDate()).equals(yearMonth));
         return this;
     }
@@ -78,7 +78,7 @@ public class ExpenseQuery {
      * @param year the year in format yyyy
      * @return this query instance for chaining
      */
-    public ExpenseQuery byYear(Year year) {
+    private ExpenseQuery byYear(Year year) {
         filter = filter.and(e -> Year.from(e.getCreationDate()).equals(year));
         return this;
     }
@@ -89,7 +89,7 @@ public class ExpenseQuery {
      * @param ascending true for ascending order, false for descending
      * @return this query instance for chaining
      */
-    public ExpenseQuery sortByAmount(boolean ascending) {
+    private ExpenseQuery sortByAmount(boolean ascending) {
         sorter = ascending ? Comparator.comparing(Expense::getAmount)
                             : Comparator.comparing(Expense::getAmount).reversed();
         return this;
